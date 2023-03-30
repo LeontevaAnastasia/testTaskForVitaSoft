@@ -22,8 +22,8 @@ public class Application extends AbstractBaseEntity {
     private String text;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "status")
-    private ApplicationStatus applicationStatus;
+    @Column(name = "status", columnDefinition = "DRAFT")
+    private ApplicationStatus status;
 
     @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     private LocalDateTime dateTime;
