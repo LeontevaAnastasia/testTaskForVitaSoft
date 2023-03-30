@@ -8,8 +8,9 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.Incor
 
 import java.util.List;
 
-public class ApplicationService {
+import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
 
+public class ApplicationService {
 
     ApplicationRepository applicationRepository;
     UserRepository userRepository;
@@ -19,21 +20,21 @@ public class ApplicationService {
     }
 
     public void delete(int id, int userId ) {
-        applicationRepository.delete(id, userId);
+        checkNotFoundWithId(applicationRepository.delete(id, userId), id);
     }
 
     public Application get(int id, int userId) {
-        return applicationRepository.getAppById(id, userId);
+        return checkNotFoundWithId(applicationRepository.getAppById(id, userId), id);
     }
 
     //add sorting
     public List<Application> getAll(int userId) {
-        return applicationRepository.getAll(userId);
+        return checkNotFoundWithId(applicationRepository.getAll(userId), userId);
     }
 
     public void update(Application application, int userId) {
         if(application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))){
-            saveApplication(application, userId);
+            checkNotFoundWithId(saveApplication(application, userId), application.getId());
         } else  throw new IncorrectUpdateException();
     }
 
@@ -50,7 +51,7 @@ public class ApplicationService {
         Application application =  applicationRepository.findById(id).orElse(null);
         application.setStatus(ApplicationStatus.valueOf(status));
 
-        applicationRepository.save(application);
+        checkNotFoundWithId(applicationRepository.save(application), id);
     }
 
 

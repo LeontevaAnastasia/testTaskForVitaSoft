@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil.updateFromTo;
+import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFound;
+import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class UserService {
@@ -23,7 +25,7 @@ public class UserService {
 
 
     public User get(int id) {
-        return userRepository.getUserById(id);
+      return   checkNotFoundWithId(userRepository.getUserById(id), id);
     }
 
     public User getByName(String name){
@@ -31,11 +33,11 @@ public class UserService {
     }
 
     public Optional<User> findByEmailIgnoringCase(String email){
-        return userRepository.findByEmailIgnoreCase(email);
+        return checkNotFound(userRepository.findByEmailIgnoreCase(email), "email=" + email);
     }
 
     public void delete(int id) {
-        userRepository.delete(id);
+        checkNotFoundWithId(userRepository.delete(id),id);
     }
 
     public List<User> getAll() {
@@ -49,7 +51,7 @@ public class UserService {
     }
 
     public void isEnable(int id, boolean enabled) {
-        User user = userRepository.getUserById(id);
+        User user = userRepository.getUserById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
@@ -57,7 +59,7 @@ public class UserService {
     }
 
     public void setOperatorRole(int id) {
-        User user = userRepository.getUserById(id);
+        User user = userRepository.getUserById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
