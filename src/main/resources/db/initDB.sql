@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS applications;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS applications_status;
 
 DROP SEQUENCE IF EXISTS global_seq;
 
@@ -32,14 +31,7 @@ CREATE TABLE applications
     user_id     INTEGER   NOT NULL,
     date_time   TIMESTAMP NOT NULL,
     text        TEXT      NOT NULL,
+    status      VARCHAR   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX app_unique_user_datetime_idx ON applications (user_id, date_time);
-
-CREATE TABLE application_status
-(
-    app_id INTEGER NOT NULL,
-    status    VARCHAR,
-    CONSTRAINT app_status_idx UNIQUE (app_id, status),
-    FOREIGN KEY (app_id) REFERENCES applications (id) ON DELETE CASCADE
-);

@@ -1,18 +1,34 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
-public class Application {
+@NoArgsConstructor
+@ToString
+@Table(name = "applications")
+public class Application extends AbstractBaseEntity {
 
+    @Column(name = "text")
+    @NotBlank
     private String text;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status")
     private ApplicationStatus applicationStatus;
 
+    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     private LocalDateTime dateTime;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
