@@ -29,7 +29,7 @@ CREATE TABLE applications
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     user_id     INTEGER   NOT NULL,
-    date_time   TIMESTAMP NOT NULL,
+    date_time   TIMESTAMP NOT NULL          DEFAULT now(),
     text        TEXT      NOT NULL,
     status      VARCHAR   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
