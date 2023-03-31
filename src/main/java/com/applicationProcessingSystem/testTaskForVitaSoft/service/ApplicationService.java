@@ -4,8 +4,8 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.model.Application;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.ApplicationStatus;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.ApplicationRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
+import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
-
 import java.util.List;
 
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
@@ -28,11 +28,21 @@ public class ApplicationService {
     }
 
     //add sorting
-    public List<Application> getAll(int userId) {
-        return checkNotFoundWithId(applicationRepository.getAll(userId), userId);
+    public List<Application> getAllForUser(int userId) {
+        return checkNotFoundWithId(applicationRepository.getAllForUser(userId), userId);
     }
 
-    public void update(Application application, int userId) {
+    public List<Application> getAll() {
+        return applicationRepository.findAll();
+    }
+
+    public List<Application> getSentApplication() {
+        List<Application> sentAppList = ApplicationUtil.formatMessage(applicationRepository.findSent());
+
+        return sentAppList;
+    }
+
+    public void updateDraft(Application application, int userId) {
         if(application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))){
             checkNotFoundWithId(saveApplication(application, userId), application.getId());
         } else  throw new IncorrectUpdateException();
@@ -48,10 +58,30 @@ public class ApplicationService {
     }
 
     public void setAppStatus(Integer id, String status) {
-        Application application =  applicationRepository.findById(id).orElse(null);
+        Application application =  checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
         application.setStatus(ApplicationStatus.valueOf(status));
 
-        checkNotFoundWithId(applicationRepository.save(application), id);
+        applicationRepository.save(application);
+    }
+
+    public void sentApplication(Integer id) {
+        Application application = checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
+
+            application.setStatus(ApplicationStatus.SENT);
+            applicationRepository.save(application);
+    }
+
+    public void processApplication (Integer id, String status) {
+        if (!status.equals(ApplicationStatus.ACCEPTED.toString()) && !status.equals(ApplicationStatus.REJECTED.toString())) {
+            throw new IncorrectUpdateException();
+        }
+
+        Application application = checkNotFoundWithId(applicationRepository.findById(id), id);
+        if(!(application.getStatus().equals(ApplicationStatus.SENT))) {
+            throw new IncorrectUpdateException();
+        }
+            application.setStatus(ApplicationStatus.valueOf(status));
+            applicationRepository.save(application);
     }
 
 
