@@ -31,4 +31,13 @@ public class Application extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Application (Integer id, String text, ApplicationStatus status, LocalDateTime dateTime, User user){
+        super(id);
+        this.text=text;
+        this.status = status;
+        this.dateTime = dateTime;
+        this.user = user;
+
+    }
 }

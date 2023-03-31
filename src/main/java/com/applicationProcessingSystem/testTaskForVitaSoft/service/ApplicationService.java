@@ -6,10 +6,13 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.repository.Applicatio
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class ApplicationService {
 
     ApplicationRepository applicationRepository;
@@ -37,9 +40,8 @@ public class ApplicationService {
     }
 
     public List<Application> getSentApplication() {
-        List<Application> sentAppList = ApplicationUtil.formatMessage(applicationRepository.findSent());
 
-        return sentAppList;
+        return ApplicationUtil.formatMessage(applicationRepository.findSent());
     }
 
     public void updateDraft(Application application, int userId) {
@@ -64,7 +66,7 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
-    public void sentApplication(Integer id) {
+    public void sendApplication(Integer id) {
         Application application = checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
 
             application.setStatus(ApplicationStatus.SENT);

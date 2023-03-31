@@ -1,5 +1,6 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.model;
 
+import com.applicationProcessingSystem.testTaskForVitaSoft.HasId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Access(AccessType.FIELD)
-public  abstract class AbstractBaseEntity {
+public  abstract class AbstractBaseEntity implements HasId {
 
     public static final int START_SEQ = 100000;
 
