@@ -1,4 +1,4 @@
-package com.applicationProcessingSystem.testTaskForVitaSoft.web.user;
+package com.applicationProcessingSystem.testTaskForVitaSoft.web.application;
 
 
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.Application;
@@ -69,7 +69,7 @@ public class ApplicationRestController {
     }
 
     @GetMapping
-    public List<Application> getAll() {
+    public List<Application> getAllForUser() {
         int userId = SecurityUtil.authUserId();
         return applicationService.getAllForUser(userId);
     }

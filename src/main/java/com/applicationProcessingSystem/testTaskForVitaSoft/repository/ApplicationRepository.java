@@ -29,6 +29,9 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     @Query("select a from Application a where a.status='SENT'")
     List<Application> findSent();
 
+    @Query("select a from Application a where a.user.name=:name")
+    List<Application> getAllForUserName(@Param("name") String name);
+
 }
 
 

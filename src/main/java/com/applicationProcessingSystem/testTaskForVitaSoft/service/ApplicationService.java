@@ -6,8 +6,6 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.repository.Applicatio
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,32 +24,38 @@ public class ApplicationService {
 
     }
 
+    //for users
     public Application create(Application application, int userId) {
         return saveApplication(application, userId);
     }
 
+    //for users
     public void delete(int id, int userId ) {
         checkNotFoundWithId(applicationRepository.delete(id, userId), id);
     }
 
+    //for users
     public Application get(int id, int userId) {
         return checkNotFoundWithId(applicationRepository.getAppById(id, userId), id);
     }
 
-    //add sorting
+    //for operator
     public List<Application> getAllForUser(int userId) {
         return checkNotFoundWithId(applicationRepository.getAllForUser(userId), userId);
     }
 
-    public List<Application> getAll() {
-        return applicationRepository.findAll();
-    }
-
-    public List<Application> getSentApplication() {
+    //for operator
+    public List<Application> getAllSentApplication() {
 
         return ApplicationUtil.formatMessage(applicationRepository.findSent());
     }
 
+    public List<Application> getAllAppForName(String name){
+
+        return ApplicationUtil.formatMessage(applicationRepository.getAllForUserName(name));
+    }
+
+    //for users
     public void updateDraft(Application application, int userId) {
         if(application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))){
             checkNotFoundWithId(saveApplication(application, userId), application.getId());
@@ -74,6 +78,7 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
+    //for users
     public void sendApplication(Integer id) {
         Application application = checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
 
@@ -81,8 +86,9 @@ public class ApplicationService {
             applicationRepository.save(application);
     }
 
+    //for operator
     public void processApplication (Integer id, String status) {
-        if (!status.equals(ApplicationStatus.ACCEPTED.toString()) && !status.equals(ApplicationStatus.REJECTED.toString())) {
+        if (!ApplicationStatus.valueOf(status).equals(ApplicationStatus.ACCEPTED) || !(ApplicationStatus.valueOf(status).equals(ApplicationStatus.REJECTED))) {
             throw new IncorrectUpdateException();
         }
 
