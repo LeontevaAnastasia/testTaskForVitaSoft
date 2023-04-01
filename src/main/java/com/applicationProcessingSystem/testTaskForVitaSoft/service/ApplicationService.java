@@ -6,6 +6,8 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.repository.Applicatio
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +17,14 @@ import static com.applicationProcessingSystem.testTaskForVitaSoft.util.Validatio
 @Service
 public class ApplicationService {
 
-    ApplicationRepository applicationRepository;
-    UserRepository userRepository;
+    private final ApplicationRepository applicationRepository;
+    private final UserRepository userRepository;
+
+    public ApplicationService(ApplicationRepository applicationRepository, UserRepository userRepository) {
+        this.applicationRepository =applicationRepository;
+        this.userRepository = userRepository;
+
+    }
 
     public Application create(Application application, int userId) {
         return saveApplication(application, userId);

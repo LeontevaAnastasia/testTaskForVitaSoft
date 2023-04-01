@@ -17,4 +17,6 @@ VALUES ('USER', 100000),
 
 INSERT INTO applications (user_id, text, status)
 VALUES (100000, 'Мне нужна помощь', 'DRAFT'),
-       (100001, 'Модем перестал работать', 'SENT');
+       (100000, 'Модем перестал работать', 'SENT'),
+       (100000, 'Помогите настроить почту', 'ACCEPTED'),
+       (100001, 'ghgfgfchgfjhgfgfj', 'REJECTED');

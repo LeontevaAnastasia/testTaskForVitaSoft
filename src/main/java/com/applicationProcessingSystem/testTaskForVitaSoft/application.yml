@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5444/vitaSoft
+    username: postgres
+    password: postgres
+    driver-class-name: com.mysql.jdbc.Driver

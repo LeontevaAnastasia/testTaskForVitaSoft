@@ -61,7 +61,7 @@ public class ApplicationRestController {
         applicationService.updateDraft(ApplicationUtil.updateFromTo((applicationService.get(id, userId)), applicationTo) , userId);
     }
 
-    @PostMapping("{/id}")
+    @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void sendApplication(@PathVariable Integer id){
         applicationService.sendApplication(id);

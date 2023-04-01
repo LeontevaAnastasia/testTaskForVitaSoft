@@ -34,4 +34,3 @@ CREATE TABLE applications
     status      VARCHAR   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX app_unique_user_datetime_idx ON applications (user_id, date_time);
