@@ -80,6 +80,14 @@ public class ApplicationRestController {
         return applicationService.get(id, userId);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+
+        int userId = SecurityUtil.authUserId();
+        applicationService.delete(id, userId);
+    }
+
 
 
 

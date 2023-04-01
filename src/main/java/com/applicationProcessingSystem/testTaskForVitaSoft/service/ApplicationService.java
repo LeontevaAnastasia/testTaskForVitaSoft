@@ -71,12 +71,6 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public void setAppStatus(Integer id, String status) {
-        Application application =  checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
-        application.setStatus(ApplicationStatus.valueOf(status));
-
-        applicationRepository.save(application);
-    }
 
     //for users
     public void sendApplication(Integer id) {

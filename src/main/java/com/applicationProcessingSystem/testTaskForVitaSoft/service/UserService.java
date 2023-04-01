@@ -1,4 +1,5 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.service;
+import com.applicationProcessingSystem.testTaskForVitaSoft.model.ApplicationStatus;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.Role;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
@@ -64,6 +65,16 @@ public class UserService {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
         user.setRoles(Set.of(Role.OPERATOR));
+    }
+
+    public void removeOperatorRole(int id) {
+        User user = userRepository.getUserById(id).orElse(null);
+        if (user == null) {
+            throw new NotFoundException("User with id " + id + " doesn't exists.");
+        }
+        Set<Role> roles= user.getRoles();
+        roles.remove(Role.OPERATOR);
+        user.setRoles(roles);
     }
 
 
