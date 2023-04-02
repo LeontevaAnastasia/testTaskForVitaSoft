@@ -27,13 +27,13 @@ public class AdminRestController {
     }
 
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}/set-role")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void setRole(@PathVariable int id) {
         userService.setOperatorRole(id);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}/remove-role")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeRole(@PathVariable int id) {
         userService.removeOperatorRole(id);

@@ -64,7 +64,7 @@ public class UserService {
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
-        user.setRoles(Set.of(Role.OPERATOR));
+        user.setRoles(Set.of(Role.OPERATOR, Role.USER));
     }
 
     public void removeOperatorRole(int id) {

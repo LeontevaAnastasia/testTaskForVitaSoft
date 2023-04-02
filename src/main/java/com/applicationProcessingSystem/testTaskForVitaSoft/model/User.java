@@ -1,5 +1,6 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
@@ -59,5 +61,13 @@ public class User extends AbstractBaseEntity {
     private List<Application> applications;
 
 
-
+    public User(Integer id, String name, String email, String password, LocalDate registered, boolean enabled, Set<Role> roles) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        this.registered = registered;
+        this.roles = roles;
+    }
 }
