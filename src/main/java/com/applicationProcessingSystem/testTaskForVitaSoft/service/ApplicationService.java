@@ -7,6 +7,7 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserReposi
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ApplicationService {
 
     //for users
     public Application create(Application application, int userId) {
+        Assert.notNull(application, "application must not be null");
         return saveApplication(application, userId);
     }
 
@@ -57,6 +59,7 @@ public class ApplicationService {
 
     //for users
     public void updateDraft(Application application, int userId) {
+        Assert.notNull(application, "application must not be null");
         if(application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))){
             checkNotFoundWithId(saveApplication(application, userId), application.getId());
         } else  throw new IncorrectUpdateException();

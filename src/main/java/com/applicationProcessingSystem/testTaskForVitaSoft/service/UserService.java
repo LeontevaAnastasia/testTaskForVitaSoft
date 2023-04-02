@@ -4,6 +4,7 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.to.UserTo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.webjars.NotFoundException;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class UserService {
     }
 
     public User create(User user) {
+        Assert.notNull(user, "user must not be null");
         return userRepository.save(user);
     }
 

@@ -1,5 +1,6 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class User extends AbstractBaseEntity {
 
     @Column(name = "password")
     @Size(min = 4, max = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
