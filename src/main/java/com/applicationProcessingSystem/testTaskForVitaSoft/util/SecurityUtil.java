@@ -1,15 +1,30 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.util;
 
+import com.applicationProcessingSystem.testTaskForVitaSoft.AuthUser;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import static java.util.Objects.requireNonNull;
+
+@NoArgsConstructor
 public class SecurityUtil {
 
     //mock
-    private static int id = 100002;
-
-    public static int authUserId() {
-        return id;
+    public static AuthUser safeGet() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+        Object principal = auth.getPrincipal();
+        return (principal instanceof AuthUser) ? (AuthUser) principal : null;
     }
 
-    public static void setAuthUserId(int id) {
-        SecurityUtil.id = id;
+    public static AuthUser get() {
+        return requireNonNull(safeGet(), "No authorized user found");
+    }
+
+    public static int authUserId() {
+        return get().getUser().id();
     }
 }

@@ -1,5 +1,4 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.service;
-import com.applicationProcessingSystem.testTaskForVitaSoft.model.ApplicationStatus;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.Role;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
@@ -43,6 +42,10 @@ public class UserService {
 
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     public void update(UserTo userTo) {
