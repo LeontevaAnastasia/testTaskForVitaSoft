@@ -85,16 +85,15 @@ public class ApplicationService {
 
     //for operator
     public void processApplication (Integer id, String status) {
-        if (!ApplicationStatus.valueOf(status).equals(ApplicationStatus.ACCEPTED) || !(ApplicationStatus.valueOf(status).equals(ApplicationStatus.REJECTED))) {
-            throw new IncorrectUpdateException();
-        }
 
-        Application application = checkNotFoundWithId(applicationRepository.findById(id), id);
-        if(!(application.getStatus().equals(ApplicationStatus.SENT))) {
-            throw new IncorrectUpdateException();
-        }
-            application.setStatus(ApplicationStatus.valueOf(status));
-            applicationRepository.save(application);
+           if (ApplicationStatus.valueOf(status).equals(ApplicationStatus.ACCEPTED) || (ApplicationStatus.valueOf(status).equals(ApplicationStatus.REJECTED))) {
+               Application application = checkNotFoundWithId(applicationRepository.findById(id), id);
+               if(!(application.getStatus().equals(ApplicationStatus.SENT))) {
+                   throw new IncorrectUpdateException();
+               }
+               application.setStatus(ApplicationStatus.valueOf(status));
+               applicationRepository.save(application);
+        } else   throw new IncorrectUpdateException();
     }
 
 

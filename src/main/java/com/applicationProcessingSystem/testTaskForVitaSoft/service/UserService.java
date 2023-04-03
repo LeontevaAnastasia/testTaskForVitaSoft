@@ -3,7 +3,11 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.model.Role;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.to.UserTo;
+import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
+import com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.webjars.NotFoundException;
 
@@ -11,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil.updateFromTo;
+import static com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil.prepareToSave;
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFound;
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
 
@@ -20,8 +24,11 @@ public class UserService {
 
     public  final  UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -51,11 +58,11 @@ public class UserService {
     }
 
     public void update(UserTo userTo) {
-
         User user = get(userTo.getId());
-        updateFromTo(user, userTo);
+        prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }
 
+    @Transactional
     public void isEnable(int id, boolean enabled) {
         User user = userRepository.getUserById(id).orElse(null);
         if (user == null) {
@@ -64,22 +71,35 @@ public class UserService {
         user.setEnabled(enabled);
     }
 
+
+    @Transactional
     public void setOperatorRole(int id) {
         User user = userRepository.getUserById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
-        user.setRoles(Set.of(Role.OPERATOR, Role.USER));
+        user.setRoles(Set.of(Role.OPERATOR));
     }
 
+    @Transactional
     public void removeOperatorRole(int id) {
         User user = userRepository.getUserById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
+        if(!(user.getRoles().toString().contains("OPERATOR"))) {
+            throw new IncorrectUpdateException();
+        }
+
         Set<Role> roles= user.getRoles();
         roles.remove(Role.OPERATOR);
+        roles.add(Role.USER);
         user.setRoles(roles);
+    }
+
+
+    private User prepareAndSave(User user) {
+        return userRepository.save(prepareToSave(user, passwordEncoder));
     }
 
 

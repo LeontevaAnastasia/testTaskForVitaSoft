@@ -4,6 +4,7 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.model.Application;
 import com.applicationProcessingSystem.testTaskForVitaSoft.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,9 @@ public class ApplicationRestControllerForOperator {
         this.applicationService = applicationService;
     }
 
-    @PostMapping("/{id}")
-    public void processApp(@PathVariable Integer id, @RequestBody String status) {
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void processApp(@PathVariable Integer id, @RequestParam String status) {
         log.info(" process application with id {}, set status {}", id, status);
         applicationService.processApplication(id, status);
     }

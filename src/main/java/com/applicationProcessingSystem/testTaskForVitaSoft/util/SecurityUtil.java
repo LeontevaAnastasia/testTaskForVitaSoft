@@ -10,7 +10,6 @@ import static java.util.Objects.requireNonNull;
 @NoArgsConstructor
 public class SecurityUtil {
 
-    //mock
     public static AuthUser safeGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -25,6 +24,6 @@ public class SecurityUtil {
     }
 
     public static int authUserId() {
-        return get().getUser().id();
+        return get().getUserTo().id();
     }
 }

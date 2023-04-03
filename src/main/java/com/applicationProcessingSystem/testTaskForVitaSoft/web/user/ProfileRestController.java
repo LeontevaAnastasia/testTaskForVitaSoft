@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import static com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil.updateFromTo;
 
 @RestController
 @RequestMapping(value = ProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,7 +31,7 @@ public class ProfileRestController {
 
     @GetMapping()
     public User get(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("Get userTo by id {}.", authUser.getUser());
+        log.info("Get userTo by id {}.", authUser.getUserTo());
         return userService.get(authUser.getId());
     }
 
@@ -49,8 +48,8 @@ public class ProfileRestController {
     public void update(@Valid @RequestBody UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
         log.info("Update user to {} by user id {}.", userTo, authUser.getId());
         ValidationUtil.assureIdConsistent(userTo, authUser.getId());
-        User user = authUser.getUser();
-        userService.create(updateFromTo(user, userTo));
+       // UserTo userTo = authUser.getUserTo();
+        userService.update(userTo);
 
 
     }

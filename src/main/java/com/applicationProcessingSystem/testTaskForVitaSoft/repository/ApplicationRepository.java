@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 
     @Modifying
@@ -29,7 +29,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     @Query("select a from Application a where a.status='SENT'")
     List<Application> findSent();
 
-    @Query("select a from Application a where a.user.name=:name")
+    @Query("select a from Application a where a.user.name=:name and a.status ='SENT'")
     List<Application> getAllForUserName(@Param("name") String name);
 
 }

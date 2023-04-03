@@ -6,13 +6,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Size;
+import java.io.Serial;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class UserTo extends AbstractBaseTo {
+public class UserTo extends AbstractBaseTo implements Serializable {
 
+
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Size(min =1, max = 128)
     private String name;
 
