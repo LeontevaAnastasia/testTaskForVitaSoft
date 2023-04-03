@@ -33,7 +33,10 @@ public class ApplicationService {
 
     //for users
     public void delete(int id, int userId ) {
-        checkNotFoundWithId(applicationRepository.delete(id, userId), id);
+        Application application = checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
+        if (application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))) {
+            applicationRepository.delete(id, userId);
+        } else throw new IncorrectUpdateException();
     }
 
     //for users
@@ -62,7 +65,7 @@ public class ApplicationService {
         Assert.notNull(application, "application must not be null");
         if(application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))){
             checkNotFoundWithId(saveApplication(application, userId), application.getId());
-        } else  throw new IncorrectUpdateException();
+        } else throw new IncorrectUpdateException();
     }
 
 
@@ -78,9 +81,10 @@ public class ApplicationService {
     //for users
     public void sendApplication(Integer id) {
         Application application = checkNotFoundWithId(applicationRepository.findById(id).orElse(null), id);
-
+        if (application.getStatus().equals(ApplicationStatus.valueOf("DRAFT"))) {
             application.setStatus(ApplicationStatus.SENT);
             applicationRepository.save(application);
+        } else  throw new IncorrectUpdateException();
     }
 
     //for operator
