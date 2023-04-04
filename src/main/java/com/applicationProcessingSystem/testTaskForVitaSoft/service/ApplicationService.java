@@ -8,8 +8,6 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -22,6 +20,8 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
+
+
 
     public ApplicationService(ApplicationRepository applicationRepository, UserRepository userRepository) {
         this.applicationRepository =applicationRepository;
@@ -50,18 +50,31 @@ public class ApplicationService {
 
     //for operator
     public List<Application> getAllForUser(int userId, PageRequest pageRequest) {
-        Page<Application> page = checkNotFoundWithId(applicationRepository.getAllForUser(userId,pageRequest), userId);
-        return page.getContent() ;
+        Page<Application> pageWithAllSentByUserId = checkNotFoundWithId(applicationRepository.getAllForUser(userId,pageRequest), userId);
+        return pageWithAllSentByUserId.getContent() ;
     }
 
     //for operator
     public List<Application> getAllSentApplication(PageRequest pageRequest) {
-        Page<Application> page = applicationRepository.findSent(pageRequest);
-        return  ApplicationUtil.formatMessage(page.getContent());
+        Page<Application> pageWithAllSent = applicationRepository.findSent(pageRequest);
+        return  ApplicationUtil.formatMessage(pageWithAllSent.getContent());
     }
 
-    public List<Application> getAllAppForName(String name, PageRequest pageRequest){
-        Page<Application> page =applicationRepository.getAllForUserName(name, pageRequest);
+    public List<Application> getAllAppForName(String name, PageRequest pageRequest) {
+
+        if (name.contains("%")) {
+            if (name.endsWith("%")) {
+                Page<Application> pageByUsernameStartWith = applicationRepository.findByUsernameStartWith(name, pageRequest);
+                return ApplicationUtil.formatMessage(pageByUsernameStartWith.getContent());
+            } else if (name.startsWith("%")) {
+                Page<Application> pageForUsernameEndWith = applicationRepository.findByUsernameEndWith(name, pageRequest);
+                return ApplicationUtil.formatMessage(pageForUsernameEndWith.getContent());
+            } else if (name.startsWith("%") && name.endsWith("%")) {
+                Page<Application>  pageByUsernamePart = applicationRepository.findByPartOfUsername(name, pageRequest);
+                return ApplicationUtil.formatMessage(pageByUsernamePart.getContent());
+            }
+        }
+        Page<Application>   page =applicationRepository.findAllForUserName(name, pageRequest);
         return ApplicationUtil.formatMessage(page.getContent());
     }
 

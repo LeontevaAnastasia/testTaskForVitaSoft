@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,7 +26,16 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     Optional<User> getUserById(int id);
 
     @Query("select u from User u where u.name=:name")
-    User findByUsername(String name);
+    List<User> findByUsername(String name);
+
+    @Query("select u from User u where u.name like concat (?1, '%')")
+    List<User> findByUsernameStartWith(String name);
+
+    @Query("select u from User u where u.name like concat ('%', ?1)")
+    List<User> findByUsernameEndWith(String name);
+
+    @Query("select u from User u where u.name like concat ('%', ?1, '%')")
+    List<User> findByPartOfUsername(String name);
 
 
 

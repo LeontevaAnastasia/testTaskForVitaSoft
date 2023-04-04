@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,7 +30,16 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     Page<Application> findSent(Pageable pageable);
 
     @Query("select a from Application a where a.user.name=:name and a.status ='SENT'")
-    Page<Application> getAllForUserName(@Param("name") String name, Pageable pageable);
+    Page<Application> findAllForUserName(@Param("name") String name, Pageable pageable);
+
+    @Query("select a from Application a where a.user.name like concat (?1, '%') and a.status ='SENT'")
+    Page<Application> findByUsernameStartWith(String name, Pageable pageable);
+
+    @Query("select a from Application a where a.user.name like concat ('%', ?1) and a.status ='SENT'")
+    Page<Application> findByUsernameEndWith(String name, Pageable pageable);
+
+    @Query("select a from Application a where a.user.name like concat ('%', ?1, '%') and a.status ='SENT'")
+    Page<Application> findByPartOfUsername(String name, Pageable pageable);
 
 }
 

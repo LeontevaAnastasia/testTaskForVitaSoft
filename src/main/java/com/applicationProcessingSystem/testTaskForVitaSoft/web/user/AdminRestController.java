@@ -53,7 +53,7 @@ public class AdminRestController {
 
 
     @GetMapping("/by-name")
-    public User findByName(@RequestParam String name){
+    public List<User> findByName(@RequestParam String name){
         return userService.getByName(name);
     }
 

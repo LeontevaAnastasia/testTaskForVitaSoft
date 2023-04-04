@@ -36,7 +36,19 @@ public class UserService {
       return   checkNotFoundWithId(userRepository.getUserById(id), id);
     }
 
-    public User getByName(String name){
+    public List<User> getByName(String name){
+
+        if(name.contains("%")){
+            if(name.endsWith("%")){
+              return   userRepository.findByUsernameStartWith(name);
+            } else if(name.startsWith("%")){
+                return   userRepository.findByUsernameEndWith(name);
+            } else if (name.startsWith("%") && name.endsWith("%")){
+                return  userRepository.findByPartOfUsername(name);
+            }
+        }
+
+
         return  userRepository.findByUsername(name);
     }
 
