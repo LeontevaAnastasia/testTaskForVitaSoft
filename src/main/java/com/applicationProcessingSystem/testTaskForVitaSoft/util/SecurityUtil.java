@@ -2,12 +2,13 @@ package com.applicationProcessingSystem.testTaskForVitaSoft.util;
 
 import com.applicationProcessingSystem.testTaskForVitaSoft.AuthUser;
 import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static java.util.Objects.requireNonNull;
 
-@NoArgsConstructor
+@UtilityClass
 public class SecurityUtil {
 
     public static AuthUser safeGet() {

@@ -4,10 +4,12 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.model.Application;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.ApplicationStatus;
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.to.ApplicationTo;
+import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@UtilityClass
 public class ApplicationUtil {
 
     public static List<Application> formatMessage(List<Application> sentAppList){

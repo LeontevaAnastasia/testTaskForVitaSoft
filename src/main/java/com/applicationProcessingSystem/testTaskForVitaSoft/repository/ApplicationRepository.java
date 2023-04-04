@@ -17,7 +17,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 
     @Modifying
     @Query("delete from Application a where a.id=:id and a.user.id=:userId")
-    int delete(@Param("id") int id, @Param("userId") int userId);
+    void delete(@Param("id") int id, @Param("userId") int userId);
 
     @Query("select a from Application a where a.id=:id and a.user.id=:userId")
     Optional<Application> getAppById(@Param("id") int id, @Param("userId") int userId);

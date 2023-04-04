@@ -12,11 +12,9 @@ import org.springframework.util.Assert;
 import org.webjars.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.UserUtil.prepareToSave;
-import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFound;
 import static com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -33,7 +31,7 @@ public class UserService {
 
 
     public User get(int id) {
-      return   checkNotFoundWithId(userRepository.getUserById(id), id);
+      return userRepository.getOne(id);
     }
 
     public List<User> getByName(String name){
@@ -50,10 +48,6 @@ public class UserService {
 
 
         return  userRepository.findByUsername(name);
-    }
-
-    public Optional<User> findByEmailIgnoringCase(String email){
-        return checkNotFound(userRepository.findByEmailIgnoreCase(email), "email=" + email);
     }
 
     public void delete(int id) {
@@ -90,7 +84,9 @@ public class UserService {
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
-        user.setRoles(Set.of(Role.OPERATOR));
+        if(user.getRoles().toString().contains("ADMIN")){
+            user.setRoles(Set.of(Role.OPERATOR, Role.ADMIN));
+        } else user.setRoles(Set.of(Role.OPERATOR));
     }
 
     @Transactional
@@ -99,16 +95,17 @@ public class UserService {
         if (user == null) {
             throw new NotFoundException("User with id " + id + " doesn't exists.");
         }
-        if(!(user.getRoles().toString().contains("OPERATOR"))) {
+        if (!(user.getRoles().toString().contains("OPERATOR"))) {
             throw new IncorrectUpdateException();
         }
 
-        Set<Role> roles= user.getRoles();
+        Set<Role> roles = user.getRoles();
         roles.remove(Role.OPERATOR);
-        roles.add(Role.USER);
+        if (!(user.getRoles().toString().contains("ADMIN"))) {
+            roles.add(Role.USER);
+        }
         user.setRoles(roles);
     }
-
 
     private User prepareAndSave(User user) {
         return userRepository.save(prepareToSave(user, passwordEncoder));

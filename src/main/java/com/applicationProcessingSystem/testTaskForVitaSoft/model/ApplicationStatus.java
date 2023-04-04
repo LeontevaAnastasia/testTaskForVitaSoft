@@ -5,5 +5,5 @@ public enum ApplicationStatus {
     DRAFT,
     SENT,
     ACCEPTED,
-    REJECTED;
+    REJECTED
 }

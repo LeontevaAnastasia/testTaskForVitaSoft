@@ -2,8 +2,10 @@ package com.applicationProcessingSystem.testTaskForVitaSoft.util;
 
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.User;
 import com.applicationProcessingSystem.testTaskForVitaSoft.to.UserTo;
+import lombok.experimental.UtilityClass;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@UtilityClass
 public class UserUtil {
 
     public static User updateFromTo(User user, UserTo userTo) {

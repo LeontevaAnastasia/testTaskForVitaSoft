@@ -30,9 +30,9 @@ public class ProfileRestController {
 
 
     @GetMapping()
-    public User get(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("Get userTo by id {}.", authUser.getUserTo());
-        return userService.get(authUser.getId());
+    public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("Get userTo by id {}.", authUser.getId());
+        return authUser.getUserTo();
     }
 
 
@@ -48,7 +48,6 @@ public class ProfileRestController {
     public void update(@Valid @RequestBody UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
         log.info("Update user to {} by user id {}.", userTo, authUser.getId());
         ValidationUtil.assureIdConsistent(userTo, authUser.getId());
-       // UserTo userTo = authUser.getUserTo();
         userService.update(userTo);
 
 

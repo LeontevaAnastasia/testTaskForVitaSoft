@@ -3,9 +3,11 @@ package com.applicationProcessingSystem.testTaskForVitaSoft.util;
 import com.applicationProcessingSystem.testTaskForVitaSoft.HasId;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IllegalRequestDataException;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.NotFoundException;
+import lombok.experimental.UtilityClass;
 
 import java.util.Optional;
 
+@UtilityClass
 public class ValidationUtil {
 
     public static <T> T checkNotFoundWithId(T object, int id) {
@@ -15,11 +17,6 @@ public class ValidationUtil {
 
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
-    }
-
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
-        return object;
     }
 
     public static void checkNotFound(boolean found, String msg) {
