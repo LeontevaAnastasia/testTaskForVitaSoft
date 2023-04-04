@@ -11,6 +11,8 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.util.SecurityUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,10 +78,22 @@ public class ApplicationRestController {
     }
 
     @GetMapping
-    public List<Application> getAllForUser() {
+    public List<Application> getAllForUser(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "5") int size) {
         log.info("get all");
         int userId = SecurityUtil.authUserId();
-        return applicationService.getAllForUser(userId);
+        return applicationService.getAllForUser(userId, PageRequest.of(page, size, Sort.by("dateTime").ascending()));
+    }
+
+
+    @GetMapping("/sortDesc")
+    public List<Application> getAllForUserSortDesc(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "5") int size) {
+        log.info("get all sorted by desc");
+        int userId = SecurityUtil.authUserId();
+        return applicationService.getAllForUser(userId, PageRequest.of(page, size, Sort.by("dateTime").descending()));
     }
 
     @GetMapping("/{id}")

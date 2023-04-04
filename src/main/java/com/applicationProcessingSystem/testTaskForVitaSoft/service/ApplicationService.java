@@ -6,6 +6,10 @@ import com.applicationProcessingSystem.testTaskForVitaSoft.repository.Applicatio
 import com.applicationProcessingSystem.testTaskForVitaSoft.repository.UserRepository;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.ApplicationUtil;
 import com.applicationProcessingSystem.testTaskForVitaSoft.util.Exceptions.IncorrectUpdateException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -45,19 +49,20 @@ public class ApplicationService {
     }
 
     //for operator
-    public List<Application> getAllForUser(int userId) {
-        return checkNotFoundWithId(applicationRepository.getAllForUser(userId), userId);
+    public List<Application> getAllForUser(int userId, PageRequest pageRequest) {
+        Page<Application> page = checkNotFoundWithId(applicationRepository.getAllForUser(userId,pageRequest), userId);
+        return page.getContent() ;
     }
 
     //for operator
-    public List<Application> getAllSentApplication() {
-
-        return ApplicationUtil.formatMessage(applicationRepository.findSent());
+    public List<Application> getAllSentApplication(PageRequest pageRequest) {
+        Page<Application> page = applicationRepository.findSent(pageRequest);
+        return  ApplicationUtil.formatMessage(page.getContent());
     }
 
-    public List<Application> getAllAppForName(String name){
-
-        return ApplicationUtil.formatMessage(applicationRepository.getAllForUserName(name));
+    public List<Application> getAllAppForName(String name, PageRequest pageRequest){
+        Page<Application> page =applicationRepository.getAllForUserName(name, pageRequest);
+        return ApplicationUtil.formatMessage(page.getContent());
     }
 
     //for users

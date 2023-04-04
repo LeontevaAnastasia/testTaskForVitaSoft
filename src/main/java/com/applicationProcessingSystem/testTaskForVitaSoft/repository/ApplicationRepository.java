@@ -1,6 +1,8 @@
 package com.applicationProcessingSystem.testTaskForVitaSoft.repository;
 
 import com.applicationProcessingSystem.testTaskForVitaSoft.model.Application;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,13 +26,13 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 
 
     @Query("select a from Application a where a.user.id=:userId")
-    Optional<List<Application>> getAllForUser(@Param("userId") int userId);
+    Page<Application> getAllForUser(@Param("userId") int userId, Pageable pageable);
 
     @Query("select a from Application a where a.status='SENT'")
-    List<Application> findSent();
+    Page<Application> findSent(Pageable pageable);
 
     @Query("select a from Application a where a.user.name=:name and a.status ='SENT'")
-    List<Application> getAllForUserName(@Param("name") String name);
+    Page<Application> getAllForUserName(@Param("name") String name, Pageable pageable);
 
 }
 
