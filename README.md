@@ -27,7 +27,7 @@
 
 
 Тестирование приложения осуществлялось вручную с помощью Swagger:
-http://localhost:8080/swagger-ui.html>http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui.html
 
 
 http://localhost:8080/rest/profile - работа с профайлом юзера
