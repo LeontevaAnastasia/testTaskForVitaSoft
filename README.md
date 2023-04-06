@@ -2,7 +2,7 @@
 
 <b>База данных Postgress</b>  - vitasoft
 
-<b>Скрипт database</b> – initDB.spl
+<b>Скрипт database</b> – initDB.sql
 
 <b>Скрипт популирования DB</b> – populateDB.sql</p>
 
